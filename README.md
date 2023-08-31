@@ -1,1 +1,4 @@
 # ansible-training
+
+
+THIS IS MDALZI ANSIBLE TRAINING REPOSITORY !
