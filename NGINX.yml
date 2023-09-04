@@ -1,6 +1,6 @@
 ---
  - name: Playbook to install NGINX
-   hosts: 192.168.1.159
+   hosts: all
    become: true
    tasks:
     - name: Ansible apt install nginx
