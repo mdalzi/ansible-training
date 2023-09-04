@@ -1,0 +1,11 @@
+---
+# Default Connectivity Variables
+ansible_user: "mdalzi"
+ansible_ssh_pass: "Zanouba@@1978$$"
+ansible_network_os: "ios"
+ansible_connection: "network_cli"
+
+# Global Config Variables
+
+ntp:
+  server1: 10.16.224.1
