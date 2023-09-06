@@ -1,0 +1,14 @@
+---
+
+- name: Cisco Enable password, Debug Var, msg
+  hosts: cisco
+
+  tasks:
+    - name: Ping
+      cisco.ios.ios_ping:
+         dest: all
+
+  tasks:
+    - name: Get facts
+      debug:
+        var: ansible_facts

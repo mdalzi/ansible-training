@@ -1,0 +1,15 @@
+---
+
+- hosts: cisco_switches
+  gather_facts: false
+  tasks:
+  - name: Run multiple commands on remote nodes
+    cisco.ios.ios_command:
+      commands:
+        - show version
+        - show ip int brief
+      wait_for:
+        - result[0] contains IOS
+#        - result[1] contains Loopback0
+#    vars:
+#      ansible_command_timeout: 60
