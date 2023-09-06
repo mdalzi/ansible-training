@@ -1,7 +1,15 @@
----
 
-- name: Enable NETCONF
+---
+- name: Get Device Facts
   hosts: junos
-  connection: ansible.netcommon.network_cli
-  junipernetworks.junos.junos_netconf:
-  when: ansible_network_os == 'junipernetworks.junos.junos'
+  connection: local
+  gather_facts: no
+
+
+
+
+#- name: Enable NETCONF
+#  hosts: junos
+#  connection: ansible.netcommon.network_cli
+#  junipernetworks.junos.junos_netconf:
+#  when: ansible_network_os == 'junipernetworks.junos.junos'
