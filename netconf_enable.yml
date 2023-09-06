@@ -5,8 +5,24 @@
   connection: local
   gather_facts: no
 
+  tasks:
+    - name: Checking NETCONF connectivity
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 830
+        timeout: 5
 
 
+
+    - name: Retrieving information from devices running Junos OS
+      juniper.device.facts:
+        savedir: "{{ playbook_dir }}/output"
+
+
+
+    - name: Print version
+      debug:
+        var: junos.version
 
 #- name: Enable NETCONF
 #  hosts: junos
