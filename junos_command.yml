@@ -1,0 +1,19 @@
+
+---
+- name: Get Device Facts
+  hosts: junos
+  connection: local
+  gather_facts: no
+  roles:
+    - Juniper.junos
+  vars_files:
+    - device_login_info.yml
+  tasks:
+  - name: Get device facts
+    juniper_junos_facts:
+      savedir: "{{ playbook_dir }}"
+      user: "{{ ansible_user }}"
+      passwd: "{{ ansible_pwd }}"
+    register: command_output
+  - debug:
+       var: command_output
