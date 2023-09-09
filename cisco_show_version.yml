@@ -2,8 +2,6 @@
 
 - hosts: cisco_routers
   gather_facts: false
-  roles:
-    - Juniper.junos
   vars_files:
     - device_login_info.yml
   vars:
@@ -23,31 +21,27 @@
 
   tasks:
 
-  - name: Gather router facts
-    cisco.ios.ios_facts:
-      username: "{{ansible_user}}"
-      password: "{{ansible_pwd1}}"
-      host: "{{inventory_hostname}}"
-
-  - name: Gather only the config and default facts
+  - name: Gather facts
     ios_facts:
-      gather_subset:
-        - config
+      gather_subset: all
+      provider:  "{{rtr_login}}"
 
   - name: Run multiple commands on remote nodes
     cisco.ios.ios_command:
-      commands:
-        - show version
-        - show ip int brief
+      commands: show version
+
+  - name: Gather legacy and resource facts
+    cisco.ios.ios_facts:
+#        - show ip int brief
 #        - result[0] contains IOS
 #        - result[1] contains Loopback0
 #    vars:
 #      ansible_command_timeout: 60
 
-  - name: Display version
-    ansible.builtin.debug:
-      msg: "The IOS version is: {{ ansible_net_version }}"
+#  - name: Display version
+#    ansible.builtin.debug:
+#      msg: "The IOS version is: {{ ansible_net_version }}"
 
-  - name: Display serial number
-    ansible.builtin.debug:
-      msg: "The serial number is:{{ ansible_net_serialnum }}"
+#  - name: Display serial number
+#    ansible.builtin.debug:
+#      msg: "The serial number is:{{ ansible_net_serialnum }}"
