@@ -1,0 +1,565 @@
+['Building configuration...
+
+Current configuration : 11205 bytes
+!
+! Last configuration change at 14:55:47 PST Thu May 30 1901
+!
+version 15.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname VALABDSWT02
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$ALsZ$u3almMvVpiIS0zF9SPYCK/
+!
+username rancid privilege 5 view RANCID secret 5 $1$tSYL$gsaHAjvRmoLGhdTEs0cmd/
+username nvadmin privilege 15 secret 5 $1$hYjA$DPL4Qo1WuQBuU.m.iiILa.
+username cisco privilege 15 password 7 121A0C0411044C
+aaa new-model
+!
+!
+aaa group server tacacs+ ACS
+ server name srv01
+ server name srv02
+ server name srv03
+!
+aaa authentication banner ^CC
+
+     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     !!                                                                !!
+     !!   This system, which includes the data stored herein, is       !!
+     !!   proprietary and confidential to Nexvortex.  This system is   !!
+     !!   for Nexvortex personnel only. Unauthorized access is         !!
+     !!   prohibited and will be prosecuted to the full extent of      !!
+     !!   applicable law.                                              !!
+     !!                                                                !!
+     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+^C
+aaa authentication login default group ACS local enable
+aaa authentication enable default group ACS enable
+aaa authorization config-commands
+aaa authorization exec default group ACS local if-authenticated 
+aaa authorization commands 1 default group ACS local 
+aaa authorization commands 15 default group ACS local 
+aaa authorization network default group ACS if-authenticated 
+aaa accounting exec default start-stop group ACS
+aaa accounting commands 1 default start-stop group ACS
+aaa accounting commands 15 default start-stop group ACS
+aaa accounting network default start-stop group ACS
+aaa accounting connection default start-stop group ACS
+aaa accounting system default start-stop group ACS
+!
+!
+!
+!
+!
+!
+aaa session-id common
+clock timezone PST -8 0
+clock summer-time PST recurring 2 Sun Nov 2:00 3 Sun Mar 2:00
+switch 1 provision ws-c2960x-24ts-l
+switch 2 provision ws-c2960x-24ts-l
+!
+!
+!
+!
+ip routing
+ip dhcp excluded-address 10.56.224.0 10.56.224.4
+!
+!
+no ip domain-lookup
+ip domain-name nexvortex.com
+ip name-server 10.48.224.9
+ip name-server 10.18.234.249
+vtp mode transparent
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+vlan 47
+ name ATT-PUBLIC-SBCs
+!
+vlan 48
+ name PUBLIC_Testing
+!
+vlan 65
+ name Verizon-Tru-Public
+!
+vlan 96
+ name SBC-Private
+!
+vlan 104 
+!
+vlan 200
+ name PubliSubnet
+!
+vlan 224
+ name MGMT
+!
+vlan 226
+ name iDRAC
+!
+vlan 901
+ remote-span
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ description "TO-VALABDSRX01.1"
+ switchport trunk allowed vlan 65,96,104,226
+ switchport mode trunk
+!
+interface Port-channel2
+ description "TO RTR01 DATA VLAN 200 "
+ switchport trunk allowed vlan 47,48,104,200
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface Port-channel3
+ description "TO RTR02 DATA VLAN 200 "
+ switchport trunk allowed vlan 47,48,104,200
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface Port-channel10
+ description "TO VRTX DATA TRUNK "
+ switchport mode trunk
+!
+interface Port-channel11
+ description "TO-VALABDSRX01.2"
+ switchport trunk allowed vlan 65,96,104,226
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface Port-channel20
+ description "TO VRTX TRUNK MGMT+PUBLIC SUBNET"
+ switchport trunk allowed vlan 48,104,224,901
+ switchport mode trunk
+!
+interface FastEthernet0
+ description AVAILABLE
+ no ip address
+ no ip route-cache
+ shutdown
+!
+interface GigabitEthernet1/0/1
+ description PO1(Gi1/0/1 ) TO-VALABDSRX01.1 RETH1(ge-0/0/8 )
+ switchport trunk allowed vlan 65,96,104,226
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface GigabitEthernet1/0/2
+!
+interface GigabitEthernet1/0/3
+ description PO1(Gi1/0/3 ) TO-VALABDSRX01.1 RETH1(ge-0/0/9 )
+ switchport trunk allowed vlan 65,96,104,226
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface GigabitEthernet1/0/4
+ description "TO Bare Metal SBC iDRAC"
+ switchport access vlan 226
+ switchport mode access
+!
+interface GigabitEthernet1/0/5
+ description "TO Bare Metal VLAN 48 PORT"
+ switchport access vlan 48
+ switchport mode access
+!
+interface GigabitEthernet1/0/6
+!
+interface GigabitEthernet1/0/7
+ description "TO VRTX MGMT PORT 2"
+ switchport access vlan 226
+ switchport mode access
+!
+interface GigabitEthernet1/0/8
+ description "TO VRTX MGMT PORT 1"
+ switchport access vlan 226
+ switchport mode access
+!
+interface GigabitEthernet1/0/9
+ description "TO VRTX MGMT"
+ switchport access vlan 226
+ switchport mode access
+!
+interface GigabitEthernet1/0/10
+ description "TO VRTX TRUNK MGMT+PUBLIC SUBNET"
+ switchport trunk allowed vlan 48,104,224,901
+ switchport mode trunk
+ channel-group 20 mode active
+!
+interface GigabitEthernet1/0/11
+ switchport mode trunk
+ channel-group 10 mode active
+!
+interface GigabitEthernet1/0/12
+ switchport mode trunk
+ channel-group 10 mode active
+!
+interface GigabitEthernet1/0/13
+ description PO1(Gi1/0/13 ) TO-VALABDSRX01.1 RETH1(ge-0/0/10 )
+ switchport trunk allowed vlan 65,96,104,226
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface GigabitEthernet1/0/14
+!
+interface GigabitEthernet1/0/15
+ description PO1(Gi1/0/15 ) TO-VALABDSRX01.1 RETH1(ge-0/0/11 )
+ switchport trunk allowed vlan 65,96,104,226
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface GigabitEthernet1/0/16
+!
+interface GigabitEthernet1/0/17
+!
+interface GigabitEthernet1/0/18
+ switchport access vlan 226
+ switchport mode access
+!
+interface GigabitEthernet1/0/19
+ switchport trunk allowed vlan 47,48,104,200
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 2 mode passive
+!
+interface GigabitEthernet1/0/20
+ switchport trunk allowed vlan 47,48,104,200
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 3 mode passive
+!
+interface GigabitEthernet1/0/21
+ description "TO CISCO RTR 1941 ACCESS LAYER TESTING VLAN 200  PORT  G0/0/0"
+ switchport access vlan 200
+ switchport mode access
+!
+interface GigabitEthernet1/0/22
+!
+interface GigabitEthernet1/0/23
+ description MGMT(Gi1/0/23) TO-VALABDSRX01.1 (ge-0/0/14)
+ switchport trunk allowed vlan 224
+ switchport mode trunk
+!
+interface GigabitEthernet1/0/24
+ description "TO CISCO RTR1 G1/0/0"
+ switchport access vlan 224
+ switchport mode access
+!
+interface GigabitEthernet1/0/25
+ shutdown
+!
+interface GigabitEthernet1/0/26
+ shutdown
+!
+interface GigabitEthernet1/0/27
+ shutdown
+!
+interface GigabitEthernet1/0/28
+ shutdown
+!
+interface GigabitEthernet2/0/1
+ description PO2(Gi2/0/1 ) TO-VALABDSRX01.2 RETH1(ge-5/0/8 )
+ switchport trunk allowed vlan 65,96,104,226
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 11 mode active
+!
+interface GigabitEthernet2/0/2
+ description "TO RTR01 DATA VLAN 200 "
+ switchport trunk allowed vlan 48,200
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface GigabitEthernet2/0/3
+ description PO2(Gi2/0/3 ) TO-VALABDSRX01.2 RETH1(ge-5/0/9 )
+ switchport trunk allowed vlan 65,96,104,226
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 11 mode active
+!
+interface GigabitEthernet2/0/4
+ description "TO Bare Metal MGMT PORT"
+ switchport access vlan 224
+ switchport mode access
+!
+interface GigabitEthernet2/0/5
+!
+interface GigabitEthernet2/0/6
+!
+interface GigabitEthernet2/0/7
+!
+interface GigabitEthernet2/0/8
+ switchport access vlan 226
+ switchport mode access
+!
+interface GigabitEthernet2/0/9
+ switchport access vlan 224
+ switchport mode access
+!
+interface GigabitEthernet2/0/10
+ description "TO VRTX TRUNK MGMT+PUBLIC SUBNET"
+ switchport trunk allowed vlan 48,104,224,901
+ switchport mode trunk
+ channel-group 20 mode active
+!
+interface GigabitEthernet2/0/11
+ switchport trunk allowed vlan 65,96,104,226
+ switchport mode trunk
+ channel-group 11 mode active
+!
+interface GigabitEthernet2/0/12
+ switchport mode trunk
+ channel-group 10 mode active
+!
+interface GigabitEthernet2/0/13
+ description PO2(Gi2/0/13 ) TO-VALABDSRX01.2 RETH1(ge-5/0/10 )
+ switchport trunk allowed vlan 65,96,104,226
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 11 mode active
+!
+interface GigabitEthernet2/0/14
+!
+interface GigabitEthernet2/0/15
+ description PO2(Gi2/0/15 ) TO-VALABDSRX01.2 RETH1(ge-5/0/11 )
+ switchport trunk allowed vlan 200
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface GigabitEthernet2/0/16
+!
+interface GigabitEthernet2/0/17
+!
+interface GigabitEthernet2/0/18
+ description "To VALABDRTR03-48-TEST G0/0 vlan 47"
+ switchport access vlan 47
+ switchport mode access
+!
+interface GigabitEthernet2/0/19
+ switchport trunk allowed vlan 47,48,104,200
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 2 mode passive
+!
+interface GigabitEthernet2/0/20
+ switchport trunk allowed vlan 47,48,104,200
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 3 mode passive
+!
+interface GigabitEthernet2/0/21
+ description "TO CISCO RTR 1941 ACCESS LAYER TESTING PORT  G0/1/0"
+ switchport access vlan 224
+ switchport mode access
+!
+interface GigabitEthernet2/0/22
+!
+interface GigabitEthernet2/0/23
+ description MGMT(Gi2/0/23) TO-VALABDSRX01.2 (ge-5/0/14)
+ switchport trunk allowed vlan 224
+ switchport mode trunk
+!
+interface GigabitEthernet2/0/24
+ description "TO CISCO RTR2 G1/0/0"
+ switchport access vlan 224
+ switchport mode access
+ no power efficient-ethernet
+!
+interface GigabitEthernet2/0/25
+ shutdown
+!
+interface GigabitEthernet2/0/26
+ shutdown
+!
+interface GigabitEthernet2/0/27
+ shutdown
+!
+interface GigabitEthernet2/0/28
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan48
+ ip address 48.0.0.4 255.255.0.0
+!
+interface Vlan104
+ ip address 10.54.104.3 255.255.255.0
+!
+interface Vlan200
+ ip address 192.168.200.4 255.255.255.128
+!
+interface Vlan224
+ description VLAN224 TRAFFIC|10.56.224.0/24|MGMT
+ ip address 10.54.224.3 255.255.255.0
+!
+interface Vlan226
+ description VLAN226 TRAFFIC|10.56.226.0/24|iDRAC
+ ip address 10.54.226.2 255.255.255.0
+!
+ip http server
+ip http secure-server
+!
+ip route 0.0.0.0 0.0.0.0 48.0.0.1
+ip route 10.0.0.0 255.0.0.0 10.54.224.1
+ip ssh version 2
+ip tacacs source-interface Vlan224
+!
+logging origin-id hostname
+logging source-interface Vlan224
+!
+snmp-server community nexvortex RO
+snmp-server host 10.152.1.157 version 2c nexvortex 
+tacacs server srv01
+ address ipv4 10.16.224.9
+ key 7 15242A1D1273383E7D19022C27111D56585D
+ single-connection
+tacacs server srv02
+ address ipv4 10.48.224.9
+ key 7 15242A1D1273383E7D19022C27111D56585D
+ single-connection
+tacacs server srv03
+ address ipv4 10.18.234.249
+ key 7 15242A1D1273383E7D19022C27111D56585D
+ single-connection
+!
+!
+no vstack
+parser view RANCID
+ secret 5 $1$EtUA$uGpzNA0131/srI7r2ef.J.
+!
+line con 0
+ password 7 12291718060E0F106E0214081374631008051745
+ logging synchronous
+line vty 0 4
+ password 7 06361D2E584B0A0D413E222B2C456B282B3B2771
+ logging synchronous
+ transport input ssh
+line vty 5 15
+ password 7 06361D2E584B0A0D413E222B2C456B282B3B2771
+ logging synchronous
+ transport input ssh
+!
+!
+monitor session 1 source interface Gi1/0/5
+monitor session 1 destination remote vlan 901 
+ntp peer 10.56.224.1
+!
+end', 'Cisco IOS Software, C2960X Software (C2960X-UNIVERSALK9-M), Version 15.2(4)E6, RELEASE SOFTWARE (fc4)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2018 by Cisco Systems, Inc.
+Compiled Thu 05-Apr-18 02:53 by prod_rel_team
+
+ROM: Bootstrap program is C2960X boot loader
+BOOTLDR: C2960X Boot Loader (C2960X-HBOOT-M) Version 15.2(4r)E3, RELEASE SOFTWARE (fc4)
+
+VALABDSWT02 uptime is 35 weeks, 6 days, 10 hours, 45 minutes
+System returned to ROM by power-on
+System restarted at 14:51:14 PST Thu May 30 1901
+System image file is "flash:c2960x-universalk9-mz.152-4.E6.bin"
+Last reload reason: power-on
+
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+cisco WS-C2960X-24TS-L (APM86XXX) processor (revision K0) with 524288K bytes of memory.
+Processor board ID FCW1949A3XT
+Last reset from power-on
+6 Virtual Ethernet interfaces
+1 FastEthernet interface
+56 Gigabit Ethernet interfaces
+The password-recovery mechanism is enabled.
+
+512K bytes of flash-simulated non-volatile configuration memory.
+Base ethernet MAC Address       : 00:DA:55:F4:CE:80
+Motherboard assembly number     : 73-15973-02
+Power supply part number        : 341-0529-02
+Motherboard serial number       : FOC19494AEN
+Power supply serial number      : DCB1944522Q
+Model revision number           : K0
+Motherboard revision number     : C0
+Model number                    : WS-C2960X-24TS-L
+Daughterboard assembly number   : 73-14200-03
+Daughterboard serial number     : FOC19485HUK
+System serial number            : FCW1949A3XT
+Top Assembly Part Number        : 800-41470-01
+Top Assembly Revision Number    : F0
+Version ID                      : V03
+CLEI Code Number                : CMMMU00ARB
+Daughterboard revision number   : A0
+Hardware Board Revision Number  : 0x12
+
+
+Switch Ports Model                     SW Version            SW Image                 
+------ ----- -----                     ----------            ----------               
+     1 28    WS-C2960X-24TS-L          15.2(4)E6             C2960X-UNIVERSALK9-M     
+*    2 28    WS-C2960X-24TS-L          15.2(4)E6             C2960X-UNIVERSALK9-M     
+
+
+Switch 01
+---------
+Switch Uptime                   : 35 weeks, 6 days, 10 hours, 45 minutes 
+Base ethernet MAC Address       : B0:7D:47:EF:66:80
+Motherboard assembly number     : 73-15973-02
+Power supply part number        : 341-0529-02
+Motherboard serial number       : FOC19190EP7
+Power supply serial number      : DCB1912537L
+Model revision number           : G0
+Motherboard revision number     : B0
+Model number                    : WS-C2960X-24TS-L
+Daughterboard assembly number   : 73-14200-03
+Daughterboard serial number     : FOC19192HN0
+System serial number            : FCW1919B4TE
+Top assembly part number        : 800-41470-01
+Top assembly revision number    : C0
+Version ID                      : V03
+CLEI Code Number                : CMMMU00ARB
+Daughterboard revision number   : A0
+
+Configuration register is 0xF']

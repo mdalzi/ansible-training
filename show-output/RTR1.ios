@@ -1,0 +1,223 @@
+['Building configuration...
+
+Current configuration : 2749 bytes
+!
+version 15.3
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname VALABDRTR03-48-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password 7 073F33435A0C1A11533B3B2C246B6A2727202166
+!
+aaa new-model
+!
+!
+aaa group server tacacs+ ACS
+ server name TACACS+
+!
+aaa authentication login default group ACS local enable
+aaa authentication enable default enable
+aaa authorization config-commands
+aaa authorization exec default group ACS local if-authenticated 
+aaa authorization commands 0 default group tacacs+ local 
+aaa authorization commands 1 default group tacacs+ local 
+aaa authorization commands 15 default group tacacs+ local 
+!
+!
+!
+!
+!
+aaa session-id common
+service-module wlan-ap 0 bootimage autonomous
+!
+!
+!
+!
+!
+!
+!
+ip domain name nexvortex.com
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+license udi pid CISCO1941W-A/K9 sn FGL183920Z3
+license accept end user agreement
+hw-module ism 0
+!
+!
+!
+username nvadmin privilege 15 password 7 046B19091B244F5A4D303537324A4D072538306C
+username mdalzi privilege 15 password 7 05380F022E6C6E58405D4356
+!
+redundancy
+!
+!
+!
+!
+!
+ip ssh version 2
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+interface Embedded-Service-Engine0/0
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0/0
+ ip address 12.201.47.10 255.255.255.128
+ duplex auto
+ speed auto
+!
+interface wlan-ap0
+ description Service module interface to manage the embedded AP
+ no ip address
+ arp timeout 0
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface Wlan-GigabitEthernet0/0
+ description Internal switch interface connecting to the embedded AP
+ no ip address
+!
+interface GigabitEthernet0/0/0
+ ip address 192.168.200.10 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1/0
+ ip address 10.54.224.8 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+!
+ip forward-protocol nd
+!
+ip http server
+no ip http secure-server
+!
+ip route 0.0.0.0 0.0.0.0 192.168.200.1
+ip route 10.0.0.0 255.0.0.0 10.54.224.1
+!
+!
+!
+tacacs server TACACS+
+ address ipv4 10.18.234.243
+ key 7 0822455D0A165445414A
+!
+!
+!
+control-plane
+!
+!
+!
+line con 0
+ password 7 097C5C060D0014064F25340A0B6569303A310743
+line aux 0
+line 2
+ no activation-character
+ no exec
+ transport preferred none
+ transport output pad telnet rlogin lapb-ta mop udptn v120 ssh
+ stopbits 1
+line 67
+ no activation-character
+ no exec
+ transport preferred none
+ transport input all
+ transport output pad telnet rlogin lapb-ta mop udptn v120 ssh
+line vty 0 4
+ password 7 046B19091B244F5A4D303537324A4D072538306C
+ transport input ssh
+line vty 5 15
+ password 7 046B19091B244F5A4D303537324A4D072538306C
+ transport input ssh
+!
+scheduler allocate 20000 1000
+!
+end', 'Cisco IOS Software, C1900 Software (C1900-UNIVERSALK9-M), Version 15.3(3)M2, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2014 by Cisco Systems, Inc.
+Compiled Thu 30-Jan-14 00:28 by prod_rel_team
+
+ROM: System Bootstrap, Version 15.0(1r)M16, RELEASE SOFTWARE (fc1)
+
+VALABDRTR03-48-TEST uptime is 35 weeks, 6 days, 11 hours, 2 minutes
+System returned to ROM by power-on
+System image file is "flash0:c1900-universalk9-mz.SPA.153-3.M2.bin"
+Last reload type: Normal Reload
+Last reload reason: power-on
+
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+Cisco CISCO1941W-A/K9 (revision 1.0) with 479232K/45056K bytes of memory.
+Processor board ID FGL183920Z3
+5 Gigabit Ethernet interfaces
+2 terminal lines
+1 Virtual Private Network (VPN) Module
+1 cisco Embedded AP (s)
+DRAM configuration is 64 bits wide with parity disabled.
+255K bytes of non-volatile configuration memory.
+255488K bytes of ATA System CompactFlash 0 (Read/Write)
+
+
+License Info:
+
+License UDI:
+
+-------------------------------------------------
+Device#\t  PID\t\t\tSN
+-------------------------------------------------
+*0  \t  CISCO1941W-A/K9       FGL183920Z3     
+
+
+
+Technology Package License Information for Module:\'c1900\' 
+
+------------------------------------------------------------------------
+Technology    Technology-package                  Technology-package
+              Current              Type           Next reboot  
+------------------------------------------------------------------------
+ipbase        ipbasek9             Permanent      ipbasek9
+security      securityk9           Permanent      securityk9
+data          None                 None           None
+NtwkEss       None                 None           None
+
+Configuration register is 0x2102']

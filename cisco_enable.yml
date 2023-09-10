@@ -1,7 +1,7 @@
 ---
 
 - name: Cisco Enable password, Debug Var, msg
-  hosts: cisco_tacacs
+  hosts: cisco
   connection: network_cli
   gather_facts: false
 
@@ -36,5 +36,18 @@
 #     host: "{{ inventory_hostname }}"
 #     username: "{{ ansible_user }}"
 #     password: "{{ ansible_pwd }}" 
-     commands: show ip route
+     commands: show ip int brief
     register: route_output
+
+#   debug: msg "{{route_output}}"
+  - name: show run
+    ios_command:
+      commands:
+        - show run
+        - show version
+    register: config
+
+  - name: save output to local directory
+    copy:
+      content: "{{ config.stdout | replace('\\n', '\n') }}"
+      dest: "show-output/{{ inventory_hostname }}.ios"
