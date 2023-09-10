@@ -23,18 +23,36 @@ all:
             SWT2:
               ansible_host: 10.54.224.3
           vars:
-              ansible_KexAlgorithms: +diffie-hellman-group1-sha1
-              ansible_become: 'yes'
-              ansible_become_method: enable
-              ansible_become_password: Zanouba@@1978$$
               ansible_connection: ansible.netcommon.network_cli
               ansible_host_key_checking: 'false'
               ansible_look_for_keys: 'false'
               ansible_network_cli_ssh_type: paramiko
               ansible_network_os: ios
-              ansible_password: Zanouba@@1978$$
               ansible_python_interpreter: /usr/bin/python3
-              ansible_user: mdalzi
+              ansible_KexAlgorithms: +diffie-hellman-group1-sha1
+              ansible_become: 'yes'
+              ansible_become_method: enable
+              ansible_become_password:  !vault |
+                 $ANSIBLE_VAULT;1.1;AES256
+                 36376530393864373136663864393036376564346436383330306661353135653165643861366336
+                 3734353535393537383439316363376433613530383965310a383534313832663666363937636339
+                 31616431613938303262326330396437663963393336653337656462376564306665626664616164
+                 6533303466396130380a303961336661373534376235616362323335656537306462343032393366
+                 35633536316235653735326537663732626466346233643434313964373631643661
+              ansible_password:  !vault |
+                 $ANSIBLE_VAULT;1.1;AES256
+                 36376530393864373136663864393036376564346436383330306661353135653165643861366336
+                 3734353535393537383439316363376433613530383965310a383534313832663666363937636339
+                 31616431613938303262326330396437663963393336653337656462376564306665626664616164
+                 6533303466396130380a303961336661373534376235616362323335656537306462343032393366
+                 35633536316235653735326537663732626466346233643434313964373631643661
+              ansible_user: !vault |
+                 $ANSIBLE_VAULT;1.1;AES256
+                 34353333643437376438663436376136343432326331376664643538336261393137306230373965
+                 6539643563373639633835636436386236323936356164630a303163393364316339386132666263
+                 63646363306236393530626633643033323534623733393663363563626133323066356436373764
+                 6462633562396263390a393536643330616235353633626435616533633831333830336262343266
+                 6131
     junos:
       children:
         juniper_srxs:
