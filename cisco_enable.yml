@@ -1,14 +1,37 @@
 ---
 
 - name: Cisco Enable password, Debug Var, msg
-  hosts: cisco
+  hosts: cisco_switches
+  connection: network_cli
+  gather_facts: false
+
+  vars_files:
+    - device_login_info.yml
+#    - set_facts:
+#        username: "{{ansible_user}}"
+#        password: "{{ansible_pwd1}}"
 
   tasks:
-    - name: Ping
-      cisco.ios.ios_ping:
-         dest: all
 
-  tasks:
-    - name: Get facts
-      debug:
-        var: ansible_facts
+  - name: Gather Login Information
+    set_fact:
+      connection:
+        authorize: yes
+        host: "{{ inventory_hostname }}"
+        username: "{{ ansible_user }}"
+        password: "{{ ansible_pwd }}"
+        timeout: 20
+
+#  - name: Ping
+#    cisco.ios.ios_ping:
+#       dest: all
+
+#  - name: Get facts
+#    debug:
+#      var: ansible_facts
+
+  - name: Show ip route output
+    ios_command:
+#      provider: "{{ connection }}"
+      commands: show ip route
+    register: route_output

@@ -1,0 +1,25 @@
+---
+
+- hosts: cisco_routers
+  vars_prompt:
+    - name: IOS_User_Prompt
+      prompt: "Enter Cisco IOS Username"
+      private: no
+    - name: IOS_Password_Prompt
+      prompt: "Enter IOS Password"
+      private: yes
+  tasks:
+# Register Username and Password #
+    - set_fact:
+        ios_user: "{{ IOS_User_Prompt }}"
+        ios_password: "{{ IOS_Password_Prompt }}"
+        ansible_become_pwd: "{{ IOS_Password_Prompt }}"
+      no_log: true
+      delegate_to: localhost
+      run_once: true
+
+# Gather Ansible Facts About Core #
+    - name: Gather Ansible Facts About Core
+      ios_facts:
+        gather_subset:
+          - all
