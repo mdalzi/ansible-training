@@ -1,7 +1,7 @@
 ---
 
 - name: Cisco Enable password, Debug Var, msg
-  hosts: cisco_switches
+  hosts: cisco_tacacs
   connection: network_cli
   gather_facts: false
 
@@ -31,7 +31,10 @@
 #      var: ansible_facts
 
   - name: Show ip route output
-    ios_command:
+    cisco.ios.ios_command:
 #      provider: "{{ connection }}"
-      commands: show ip route
+#     host: "{{ inventory_hostname }}"
+#     username: "{{ ansible_user }}"
+#     password: "{{ ansible_pwd }}" 
+     commands: show ip route
     register: route_output
