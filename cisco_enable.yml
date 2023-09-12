@@ -51,3 +51,14 @@
     copy:
       content: "{{ config.stdout | replace('\\n', '\n') }}"
       dest: "show-output/{{ inventory_hostname }}.ios"
+
+  - name: Gather all facts
+    cisco.ios.ios_facts:
+
+  - name: Display version
+    ansible.builtin.debug:
+      msg: "The IOS version is: {{ ansible_net_version }}"
+
+  - name: Display serial number
+    ansible.builtin.debug:
+      msg: "The serial number is:{{ ansible_net_serialnum }}"

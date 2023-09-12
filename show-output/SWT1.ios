@@ -415,7 +415,7 @@ Compiled Thu 05-Apr-18 02:53 by prod_rel_team
 ROM: Bootstrap program is C2960X boot loader
 BOOTLDR: C2960X Boot Loader (C2960X-HBOOT-M) Version 15.2(4r)E3, RELEASE SOFTWARE (fc4)
 
-VALABDSWT01 uptime is 35 weeks, 6 days, 10 hours, 49 minutes
+VALABDSWT01 uptime is 35 weeks, 6 days, 22 hours, 48 minutes
 System returned to ROM by power-on
 System restarted at 09:21:06 EST Fri Jun 1 2035
 System image file is "flash:c2960x-universalk9-mz.152-4.E6.bin"
@@ -474,7 +474,7 @@ Switch Ports Model                     SW Version            SW Image
 
 Switch 01
 ---------
-Switch Uptime                   : 35 weeks, 6 days, 10 hours, 49 minutes 
+Switch Uptime                   : 35 weeks, 6 days, 22 hours, 48 minutes 
 Base ethernet MAC Address       : DC:A5:F4:34:99:80
 Motherboard assembly number     : 73-14194-03
 Power supply part number        : 341-0529-01
