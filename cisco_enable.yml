@@ -7,9 +7,6 @@
 
   vars_files:
     - device_login_info.yml
-#    - set_facts:
-#        username: "{{ansible_user}}"
-#        password: "{{ansible_pwd1}}"
 
   tasks:
 
@@ -22,24 +19,12 @@
         password: "{{ ansible_pwd }}"
         timeout: 20
 
-#  - name: Ping
-#    cisco.ios.ios_ping:
-#       dest: all
-
-#  - name: Get facts
-#    debug:
-#      var: ansible_facts
 
   - name: Show ip route output
     cisco.ios.ios_command:
-#      provider: "{{ connection }}"
-#     host: "{{ inventory_hostname }}"
-#     username: "{{ ansible_user }}"
-#     password: "{{ ansible_pwd }}" 
      commands: show ip int brief
     register: route_output
 
-#   debug: msg "{{route_output}}"
   - name: show run
     ios_command:
       commands:
